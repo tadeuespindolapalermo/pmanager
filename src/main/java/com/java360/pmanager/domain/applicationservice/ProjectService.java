@@ -39,4 +39,9 @@ public class ProjectService {
             .findById(projectId)
             .orElseThrow(() -> new ProjectNotFoundException(projectId));
     }
+
+    @Transactional
+    public void deleteProject(String projectId) {
+        projectRepository.delete(loadProject(projectId));
+    }
 }
