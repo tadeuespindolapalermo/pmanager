@@ -1,5 +1,6 @@
 package com.java360.pmanager.infrastructure.dto;
 
+import jakarta.validation.constraints.AssertTrue;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.Data;
@@ -24,4 +25,10 @@ public class SaveProjectDataDTO {
     private final LocalDate finalDate;
 
     private final String status;
+
+    @AssertTrue(message = "Dates are not consistent")
+    @SuppressWarnings("unused")
+    private boolean isInitialDateBeforeFinalDate() {
+        return initialDate.isBefore(finalDate);
+    }
 }
