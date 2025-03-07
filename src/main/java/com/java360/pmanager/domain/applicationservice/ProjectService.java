@@ -6,10 +6,12 @@ import com.java360.pmanager.domain.repository.ProjectRepository;
 import com.java360.pmanager.infrastructure.dto.SaveProjectDataDTO;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class ProjectService {
 
     private final ProjectRepository projectRepository;
@@ -27,6 +29,7 @@ public class ProjectService {
 
         projectRepository.save(project);
 
+        log.info("Project created: {}", project);
         return project;
     }
 }
