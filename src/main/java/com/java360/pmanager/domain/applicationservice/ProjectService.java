@@ -1,6 +1,7 @@
 package com.java360.pmanager.domain.applicationservice;
 
 import com.java360.pmanager.domain.entity.Project;
+import com.java360.pmanager.domain.exception.ProjectNotFoundException;
 import com.java360.pmanager.domain.model.ProjectStatus;
 import com.java360.pmanager.domain.repository.ProjectRepository;
 import com.java360.pmanager.infrastructure.dto.SaveProjectDataDTO;
@@ -31,5 +32,11 @@ public class ProjectService {
 
         log.info("Project created: {}", project);
         return project;
+    }
+
+    public Project loadProject(String projectId) {
+        return projectRepository
+            .findById(projectId)
+            .orElseThrow(() -> new ProjectNotFoundException(projectId));
     }
 }
