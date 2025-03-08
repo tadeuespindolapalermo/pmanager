@@ -37,4 +37,10 @@ public class MemberService {
             .orElseThrow(() -> new MemberNotFoundException(memberId));
     }
 
+    @Transactional
+    public void deleteMember(String memberId) {
+        Member member = loadMemberById(memberId);
+        member.setDeleted(true);
+    }
+
 }

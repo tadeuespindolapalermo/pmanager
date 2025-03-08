@@ -37,4 +37,10 @@ public class MemberRestResource {
         return ResponseEntity.ok(MemberDTO.create(member));
     }
 
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteMember(@PathVariable("id") String memberId) {
+        memberService.deleteMember(memberId);
+        return ResponseEntity.noContent().build();
+    }
+
 }
