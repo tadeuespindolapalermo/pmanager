@@ -1,17 +1,15 @@
 package com.java360.pmanager.domain.applicationservice;
 
 import com.java360.pmanager.domain.entity.Member;
-import com.java360.pmanager.domain.entity.Project;
 import com.java360.pmanager.domain.exception.DuplicateMemberException;
-import com.java360.pmanager.domain.exception.DuplicateProjectException;
 import com.java360.pmanager.domain.exception.MemberNotFoundException;
 import com.java360.pmanager.domain.repository.MemberRepository;
 import com.java360.pmanager.infrastructure.dto.SaveMemberDataDTO;
-import com.java360.pmanager.infrastructure.dto.SaveProjectDataDTO;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
 
@@ -64,6 +62,20 @@ public class MemberService {
         member.setEmail(saveMemberData.getEmail());
 
         return member;
+    }
+
+    public List<Member> findMembers(String email) {
+        List<Member> members;
+
+        if (Objects.isNull(email)) {
+            members = memberRepository.findAllNotDeleted();
+        } else {
+            members = memberRepository
+                .findByEmailAndDeleted(email, false)
+                .map(List::of)
+                .orElse(List.of());
+        }
+        return members;
     }
 
     private boolean existsMemberWithEmail(String email, String idToExclude) {
