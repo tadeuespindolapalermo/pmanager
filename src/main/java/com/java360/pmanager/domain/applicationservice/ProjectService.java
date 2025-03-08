@@ -1,6 +1,7 @@
 package com.java360.pmanager.domain.applicationservice;
 
 import com.java360.pmanager.domain.entity.Project;
+import com.java360.pmanager.domain.exception.DuplicateProjectException;
 import com.java360.pmanager.domain.exception.InvalidProjectStatusException;
 import com.java360.pmanager.domain.exception.ProjectNotFoundException;
 import com.java360.pmanager.domain.model.ProjectStatus;
@@ -11,6 +12,8 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import java.util.Objects;
+
 @Service
 @RequiredArgsConstructor
 @Slf4j
@@ -20,6 +23,10 @@ public class ProjectService {
 
     @Transactional
     public Project createProject(SaveProjectDataDTO saveProjectData) {
+        if (existsProjectWithName(saveProjectData.getName(), null)) {
+            throw new DuplicateProjectException(saveProjectData.getName());
+        }
+
         Project project = Project
             .builder()
             .name(saveProjectData.getName())
@@ -48,6 +55,10 @@ public class ProjectService {
 
     @Transactional
     public Project updateProject(String projectId, SaveProjectDataDTO saveProjectData) {
+        if (existsProjectWithName(saveProjectData.getName(), projectId)) {
+            throw new DuplicateProjectException(saveProjectData.getName());
+        }
+
         Project project = loadProject(projectId);
 
         project.setName(saveProjectData.getName());
@@ -65,5 +76,12 @@ public class ProjectService {
         } catch (IllegalArgumentException | NullPointerException e) {
             throw new InvalidProjectStatusException(statusStr);
         }
+    }
+
+    private boolean existsProjectWithName(String name, String idToExclude) {
+        return projectRepository
+            .findByName(name)
+            .filter(p -> !Objects.equals(p.getId(), idToExclude))
+            .isPresent();
     }
 }
