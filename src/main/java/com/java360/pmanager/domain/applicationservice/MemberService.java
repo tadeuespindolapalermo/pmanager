@@ -2,6 +2,7 @@ package com.java360.pmanager.domain.applicationservice;
 
 import com.java360.pmanager.domain.entity.Member;
 import com.java360.pmanager.domain.entity.Project;
+import com.java360.pmanager.domain.exception.DuplicateMemberException;
 import com.java360.pmanager.domain.exception.DuplicateProjectException;
 import com.java360.pmanager.domain.exception.MemberNotFoundException;
 import com.java360.pmanager.domain.repository.MemberRepository;
@@ -11,6 +12,7 @@ import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.Objects;
 import java.util.UUID;
 
 @Service
@@ -21,6 +23,10 @@ public class MemberService {
 
     @Transactional
     public Member createMember(SaveMemberDataDTO saveMemberData) {
+        if (existsMemberWithEmail(saveMemberData.getEmail(), null)) {
+            throw new DuplicateMemberException(saveMemberData.getEmail());
+        }
+
         Member member = Member
             .builder()
             .name(saveMemberData.getName())
@@ -48,12 +54,23 @@ public class MemberService {
 
     @Transactional
     public Member updateMember(String memberId, SaveMemberDataDTO saveMemberData) {
+        if (existsMemberWithEmail(saveMemberData.getEmail(), memberId)) {
+            throw new DuplicateMemberException(saveMemberData.getEmail());
+        }
+
         Member member = loadMemberById(memberId);
 
         member.setName(saveMemberData.getName());
         member.setEmail(saveMemberData.getEmail());
 
         return member;
+    }
+
+    private boolean existsMemberWithEmail(String email, String idToExclude) {
+        return memberRepository
+            .findByEmailAndDeleted(email, false)
+            .filter(m -> !Objects.equals(m.getId(), idToExclude))
+            .isPresent();
     }
 
 }
