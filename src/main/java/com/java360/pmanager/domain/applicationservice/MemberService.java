@@ -1,6 +1,7 @@
 package com.java360.pmanager.domain.applicationservice;
 
 import com.java360.pmanager.domain.entity.Member;
+import com.java360.pmanager.domain.exception.MemberNotFoundException;
 import com.java360.pmanager.domain.repository.MemberRepository;
 import com.java360.pmanager.infrastructure.dto.SaveMemberDataDTO;
 import jakarta.transaction.Transactional;
@@ -28,6 +29,12 @@ public class MemberService {
         memberRepository.save(member);
 
         return member;
+    }
+
+    public Member loadMemberById(String memberId) {
+        return memberRepository
+            .findByIdAndDeleted(memberId, false)
+            .orElseThrow(() -> new MemberNotFoundException(memberId));
     }
 
 }
