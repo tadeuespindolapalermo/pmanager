@@ -11,5 +11,5 @@ public interface MemberRepository extends JpaRepository<Member, String> {
 
     Optional<Member> findByIdAndDeleted(String id, boolean deleted);
 
-    Optional<Member> findByEmailDeleted(String email, boolean deleted);
+    Optional<Member> findByEmailAndDeleted(String email, boolean deleted);
 }
