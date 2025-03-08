@@ -1,9 +1,12 @@
 package com.java360.pmanager.domain.applicationservice;
 
 import com.java360.pmanager.domain.entity.Member;
+import com.java360.pmanager.domain.entity.Project;
+import com.java360.pmanager.domain.exception.DuplicateProjectException;
 import com.java360.pmanager.domain.exception.MemberNotFoundException;
 import com.java360.pmanager.domain.repository.MemberRepository;
 import com.java360.pmanager.infrastructure.dto.SaveMemberDataDTO;
+import com.java360.pmanager.infrastructure.dto.SaveProjectDataDTO;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -41,6 +44,16 @@ public class MemberService {
     public void deleteMember(String memberId) {
         Member member = loadMemberById(memberId);
         member.setDeleted(true);
+    }
+
+    @Transactional
+    public Member updateMember(String memberId, SaveMemberDataDTO saveMemberData) {
+        Member member = loadMemberById(memberId);
+
+        member.setName(saveMemberData.getName());
+        member.setEmail(saveMemberData.getEmail());
+
+        return member;
     }
 
 }

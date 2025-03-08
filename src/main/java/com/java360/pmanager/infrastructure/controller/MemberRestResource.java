@@ -2,9 +2,7 @@ package com.java360.pmanager.infrastructure.controller;
 
 import com.java360.pmanager.domain.applicationservice.MemberService;
 import com.java360.pmanager.domain.entity.Member;
-import com.java360.pmanager.domain.entity.Project;
 import com.java360.pmanager.infrastructure.dto.MemberDTO;
-import com.java360.pmanager.infrastructure.dto.ProjectDTO;
 import com.java360.pmanager.infrastructure.dto.SaveMemberDataDTO;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -41,6 +39,15 @@ public class MemberRestResource {
     public ResponseEntity<Void> deleteMember(@PathVariable("id") String memberId) {
         memberService.deleteMember(memberId);
         return ResponseEntity.noContent().build();
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<MemberDTO> updateMember(
+        @PathVariable("id") String memberId,
+        @RequestBody @Valid SaveMemberDataDTO saveMemberData
+    ) {
+        Member member = memberService.updateMember(memberId, saveMemberData);
+        return ResponseEntity.ok(MemberDTO.create(member));
     }
 
 }
