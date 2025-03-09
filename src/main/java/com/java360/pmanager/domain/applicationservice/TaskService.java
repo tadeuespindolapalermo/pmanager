@@ -1,7 +1,9 @@
 package com.java360.pmanager.domain.applicationservice;
 
 import com.java360.pmanager.domain.entity.Task;
+import com.java360.pmanager.domain.exception.InvalidTaskStatusException;
 import com.java360.pmanager.domain.exception.TaskNotFoundException;
+import com.java360.pmanager.domain.model.TaskStatus;
 import com.java360.pmanager.domain.repository.TaskRepository;
 import com.java360.pmanager.infrastructure.dto.SaveTaskDataDTO;
 import jakarta.transaction.Transactional;
@@ -40,6 +42,26 @@ public class TaskService {
     @Transactional
     public void deleteTask(String taskId) {
         taskRepository.delete(loadTask(taskId));
+    }
+
+    @Transactional
+    public Task updateTask(String taskId, SaveTaskDataDTO saveTaskData) {
+        Task task = loadTask(taskId);
+
+        task.setTitle(saveTaskData.getTitle());
+        task.setDescription(saveTaskData.getDescription());
+        task.setNumberOfDays(saveTaskData.getNumberOfDays());
+        task.setStatus(convertToTaskStatus(saveTaskData.getStatus()));
+
+        return task;
+    }
+
+    private TaskStatus convertToTaskStatus(String statusStr) {
+        try {
+            return TaskStatus.valueOf(statusStr);
+        } catch (IllegalArgumentException | NullPointerException e) {
+            throw new InvalidTaskStatusException(statusStr);
+        }
     }
 
 }
