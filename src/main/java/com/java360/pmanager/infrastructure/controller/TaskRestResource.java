@@ -35,4 +35,10 @@ public class TaskRestResource {
         return ResponseEntity.ok(TaskDTO.create(task));
     }
 
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteTask(@PathVariable("id") String taskId) {
+        taskService.deleteTask(taskId);
+        return ResponseEntity.noContent().build();
+    }
+
 }

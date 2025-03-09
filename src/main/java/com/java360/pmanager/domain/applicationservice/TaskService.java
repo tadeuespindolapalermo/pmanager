@@ -37,4 +37,9 @@ public class TaskService {
             .orElseThrow(() -> new TaskNotFoundException(taskId));
     }
 
+    @Transactional
+    public void deleteTask(String taskId) {
+        taskRepository.delete(loadTask(taskId));
+    }
+
 }
