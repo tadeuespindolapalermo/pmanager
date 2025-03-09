@@ -6,7 +6,6 @@ import com.java360.pmanager.domain.exception.DuplicateProjectException;
 import com.java360.pmanager.domain.exception.InvalidProjectStatusException;
 import com.java360.pmanager.domain.exception.ProjectNotFoundException;
 import com.java360.pmanager.domain.model.ProjectStatus;
-import com.java360.pmanager.domain.repository.MemberRepository;
 import com.java360.pmanager.domain.repository.ProjectRepository;
 import com.java360.pmanager.infrastructure.dto.SaveProjectDataDTO;
 import jakarta.transaction.Transactional;
@@ -18,10 +17,6 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
-import java.util.stream.Collectors;
-
-import static java.util.stream.Collectors.toList;
-import static java.util.stream.Collectors.toSet;
 
 @Service
 @RequiredArgsConstructor
