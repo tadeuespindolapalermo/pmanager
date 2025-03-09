@@ -6,6 +6,7 @@ import jakarta.validation.constraints.Size;
 import lombok.Data;
 
 import java.time.LocalDate;
+import java.util.Set;
 
 @Data
 public class SaveProjectDataDTO {
@@ -25,6 +26,8 @@ public class SaveProjectDataDTO {
     private final LocalDate finalDate;
 
     private final String status;
+
+    private final Set<String> memberIds;
 
     @AssertTrue(message = "Dates are not consistent")
     @SuppressWarnings("unused")
