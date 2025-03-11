@@ -12,6 +12,9 @@ import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+import java.util.Optional;
+
 import static com.java360.pmanager.domain.model.TaskStatus.PENDING;
 import static java.util.Objects.nonNull;
 
@@ -69,6 +72,20 @@ public class TaskService {
         task.setAssignedMember(member);
 
         return task;
+    }
+
+    public List<Task> findTasks(
+        String projectId,
+        String memberId,
+        String statusStr,
+        String partialTitle
+    ) {
+        return taskRepository.find(
+            projectId,
+            memberId,
+            Optional.ofNullable(statusStr).map(this::convertToTaskStatus).orElse(null),
+            partialTitle
+        );
     }
 
     private Project getProjectIfPossible(String projectId) {

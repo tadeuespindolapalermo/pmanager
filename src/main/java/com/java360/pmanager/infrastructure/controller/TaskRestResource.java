@@ -10,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
+import java.util.List;
 
 import static com.java360.pmanager.infrastructure.controller.RestConstants.PATH_TASKS;
 
@@ -48,6 +49,17 @@ public class TaskRestResource {
     ) {
         Task task = taskService.updateTask(taskId, saveTaskData);
         return ResponseEntity.ok(TaskDTO.create(task));
+    }
+
+    @GetMapping()
+    public ResponseEntity<List<TaskDTO>> findTasks(
+        @RequestParam(value = "projectId", required = false) String projectId,
+        @RequestParam(value = "memberId", required = false) String memberId,
+        @RequestParam(value = "status", required = false) String status,
+        @RequestParam(value = "partialTitle", required = false) String partialTitle
+    ) {
+        List<Task> tasks = taskService.findTasks(projectId, memberId, status, partialTitle);
+        return ResponseEntity.ok(tasks.stream().map(TaskDTO::create).toList());
     }
 
 }
