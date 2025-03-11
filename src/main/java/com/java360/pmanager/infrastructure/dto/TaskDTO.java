@@ -11,6 +11,8 @@ public class TaskDTO {
     private final String description;
     private final Integer numberOfDays;
     private final TaskStatus status;
+    private final ProjectDTO project;
+    private final MemberDTO assignedMember;
 
     public static TaskDTO create(Task task) {
         return new TaskDTO(
@@ -18,7 +20,9 @@ public class TaskDTO {
             task.getTitle(),
             task.getDescription(),
             task.getNumberOfDays(),
-            task.getStatus()
+            task.getStatus(),
+            ProjectDTO.create(task.getProject()),
+            MemberDTO.create(task.getAssignedMember())
         );
     }
 }
