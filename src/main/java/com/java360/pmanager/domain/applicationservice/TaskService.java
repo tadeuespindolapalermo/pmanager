@@ -25,16 +25,8 @@ public class TaskService {
 
     @Transactional
     public Task createTask(SaveTaskDataDTO saveTaskData) {
-        Project project = null;
-        Member member = null;
-
-        if (nonNull(saveTaskData.getProjectId())) {
-            project = projectService.loadProject(saveTaskData.getProjectId());
-        }
-
-        if (nonNull(saveTaskData.getMemberId())) {
-            member = memberService.loadMemberById(saveTaskData.getMemberId());
-        }
+        Project project = getProjectIfPossible(saveTaskData.getProjectId());
+        Member member = getMemberIfPossible(saveTaskData.getMemberId());
 
         Task task = Task
             .builder()
@@ -64,14 +56,35 @@ public class TaskService {
 
     @Transactional
     public Task updateTask(String taskId, SaveTaskDataDTO saveTaskData) {
+        Project project = getProjectIfPossible(saveTaskData.getProjectId());
+        Member member = getMemberIfPossible(saveTaskData.getMemberId());
+
         Task task = loadTask(taskId);
 
         task.setTitle(saveTaskData.getTitle());
         task.setDescription(saveTaskData.getDescription());
         task.setNumberOfDays(saveTaskData.getNumberOfDays());
         task.setStatus(convertToTaskStatus(saveTaskData.getStatus()));
+        task.setProject(project);
+        task.setAssignedMember(member);
 
         return task;
+    }
+
+    private Project getProjectIfPossible(String projectId) {
+        Project project = null;
+        if (nonNull(projectId)) {
+            project = projectService.loadProject(projectId);
+        }
+        return project;
+    }
+
+    private Member getMemberIfPossible(String memberId) {
+        Member member = null;
+        if (nonNull(memberId)) {
+            member = memberService.loadMemberById(memberId);
+        }
+        return member;
     }
 
     private TaskStatus convertToTaskStatus(String statusStr) {
