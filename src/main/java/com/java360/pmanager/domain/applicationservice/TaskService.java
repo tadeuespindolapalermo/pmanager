@@ -92,7 +92,7 @@ public class TaskService {
             memberId,
             Optional.ofNullable(statusStr).map(this::convertToTaskStatus).orElse(null),
             partialTitle,
-            createPageable(page, props.getPageSize(), directionStr, properties)
+            createPageable(page, props.getGeneral().getPageSize(), directionStr, properties)
         );
     }
 

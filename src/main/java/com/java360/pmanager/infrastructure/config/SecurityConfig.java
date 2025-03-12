@@ -3,6 +3,7 @@ package com.java360.pmanager.infrastructure.config;
 import com.java360.pmanager.infrastructure.security.AuthenticationFilter;
 import com.java360.pmanager.infrastructure.security.AuthenticationService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -21,6 +22,7 @@ public class SecurityConfig {
 
     private final AuthenticationService authenticationService;
 
+    @Bean
     public SecurityFilterChain filterChain(HttpSecurity httpSecurity) throws Exception {
         return httpSecurity
             .csrf(AbstractHttpConfigurer::disable)
