@@ -26,6 +26,11 @@ spring:
     #para MySQL
     hibernate:
       ddl-auto: update
+  data:
+    mongodb:
+      host: localhost
+      port: 27017
+      database: pmanagerdb
 app:
   general:
     pageSize: 3
