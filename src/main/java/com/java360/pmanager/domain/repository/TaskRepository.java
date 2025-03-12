@@ -2,6 +2,8 @@ package com.java360.pmanager.domain.repository;
 
 import com.java360.pmanager.domain.entity.Task;
 import com.java360.pmanager.domain.model.TaskStatus;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -23,10 +25,17 @@ public interface TaskRepository extends JpaRepository<Task, String> {
             (:partialTitle IS NULL OR UPPER(t.title) LIKE CONCAT('%', UPPER(:partialTitle), '%'))
         """
     )
-    List<Task> find(
+//    List<Task> find(
+//        @Param("projectId") String projectId,
+//        @Param("memberId") String memberId,
+//        @Param("status") TaskStatus status,
+//        @Param("partialTitle") String partialTitle
+//    );
+    Page<Task> find(
         @Param("projectId") String projectId,
         @Param("memberId") String memberId,
         @Param("status") TaskStatus status,
-        @Param("partialTitle") String partialTitle
+        @Param("partialTitle") String partialTitle,
+        Pageable pageable
     );
 }
