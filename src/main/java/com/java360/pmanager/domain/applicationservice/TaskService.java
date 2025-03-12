@@ -7,6 +7,7 @@ import com.java360.pmanager.domain.exception.InvalidTaskStatusException;
 import com.java360.pmanager.domain.exception.TaskNotFoundException;
 import com.java360.pmanager.domain.model.TaskStatus;
 import com.java360.pmanager.domain.repository.TaskRepository;
+import com.java360.pmanager.infrastructure.config.AppConfigProperties;
 import com.java360.pmanager.infrastructure.dto.SaveTaskDataDTO;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -27,6 +28,7 @@ public class TaskService {
     private final MemberService memberService;
     private final ProjectService projectService;
     private final TaskRepository taskRepository;
+    private final AppConfigProperties props;
 
     @Transactional
     public Task createTask(SaveTaskDataDTO saveTaskData) {
@@ -90,7 +92,7 @@ public class TaskService {
             memberId,
             Optional.ofNullable(statusStr).map(this::convertToTaskStatus).orElse(null),
             partialTitle,
-            createPageable(page, 3, directionStr, properties)
+            createPageable(page, props.getPageSize(), directionStr, properties)
         );
     }
 
