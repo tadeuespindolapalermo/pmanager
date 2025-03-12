@@ -7,15 +7,24 @@ spring:
     default-property-inclusion: non_null
   application:
     name: PManager
+#H2
+#  datasource:
+#    url: jdbc:h2:mem:test
+#    driverClassName: org.h2.Driver
+#    username: sa
+#    password:
   datasource:
-    url: jdbc:h2:mem:test
-    driverClassName: org.h2.Driver
-    username: sa
-    password:
-  h2:
-    console:
-      enabled: true
+    url: jdbc:mysql://localhost:3306/pmanagerdb
+    driverClassName: com.mysql.cj.jdbc.Driver
+    username: root
+    password: mysqlroot
+#  h2:
+#    console:
+#      enabled: true
   jpa:
     show-sql: true
+    #para MySQL
+    hibernate:
+      ddl-auto: update
 app:
   pageSize: 3
