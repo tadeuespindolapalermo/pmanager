@@ -18,5 +18,6 @@ public class AppConfigProperties {
     @Data
     public static class Security {
         private final String apiKey;
+        private final Integer expirationDays;
     }
 }

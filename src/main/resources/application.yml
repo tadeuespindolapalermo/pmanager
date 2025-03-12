@@ -36,3 +36,4 @@ app:
     pageSize: 3
   security:
     apiKey: thekey
+    expirationDays: 2
