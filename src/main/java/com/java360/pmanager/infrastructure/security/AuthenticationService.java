@@ -10,7 +10,7 @@ import java.util.Objects;
 @Service
 public class AuthenticationService {
 
-    private final static String AUTH_TOKEN_HEADER_NAME = "x-api-key";
+    private static final String AUTH_TOKEN_HEADER_NAME = "x-api-key";
 
     public Authentication getAuthentication(HttpServletRequest request) {
         String apiKey = request.getHeader(AUTH_TOKEN_HEADER_NAME);
